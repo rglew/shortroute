@@ -2,6 +2,13 @@
 'use strict';
 
 var program = require('commander');
+var fs = require('fs');
+
+var array = fs.readFileSync('input/graph.txt').toString().split(',');
+var i = 0;
+for(i in array) {
+    console.log(array[i].trim());
+}
  
 program
   .version('0.0.1')
