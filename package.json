@@ -1,0 +1,28 @@
+{
+  "name": "shortroute",
+  "version": "1.0.0",
+  "description": "Trains implementation for TW coding assignment",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "bin": {
+    "sr": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rglew/shortroute.git"
+  },
+  "keywords": [
+    "trains"
+  ],
+  "author": "Richard Glew",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rglew/shortroute/issues"
+  },
+  "homepage": "https://github.com/rglew/shortroute#readme",
+  "dependencies": {
+    "commander": "^2.9.0"
+  }
+}
