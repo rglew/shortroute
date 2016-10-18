@@ -10,10 +10,10 @@ It is written in Javascript using NodeJS v6.8.1 and NPM 3.10.9
 
 ##Setup:
 
-1 - Ensure correct versions of Node and NPM are installed
-2 - Unzip the file, routes.zip into a folder
-3 - Go into that folder and type `NPM install`
-4 - Then enter `NPM link`
+1. Ensure correct versions of Node and NPM are installed
+2. Unzip the file, routes.zip into a folder
+3. Go into that folder and type `NPM install`
+4. Then enter `NPM link`
 
 At this point, the app should be ready to go on your system as a console app using the alias rr (if you want to use something else, then it can be changed in the package.json file)
 
