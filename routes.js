@@ -2,7 +2,12 @@ var fs = require('fs');
 
 
 module.exports.convertGraph = function(vertexSet, inputArray) {
-  return inputArray
+  
+
+
+
+try{
+  var res = inputArray
     .map(function(val) {
       var parts = val.split('');
       var num = val.slice(2, val.length);
@@ -12,11 +17,34 @@ module.exports.convertGraph = function(vertexSet, inputArray) {
         parseInt(num, 10)
       ];
     });
+} catch (err) {
+  return fail("Error parsing graph");
+}
+
+// need to check for duplicates
+// need to check start node and end node are not the same
+
+var i=0;
+var j=0;
+
+res.sort(function(a,b) {
+if (a[1] == b[1])
+return a[0] < b[0] ? -1 : 1;
+return a[1] < b[1] ? 1 : -1;
+});
+
+for (i=0 ; i< res.length -1 ;i++){
+  for (j=0; j < 2; j++){  // only need to check the first two elements
+   if (res[i][0] === res[i][1]) return fail('Bad edge detected');
+   if ((res[i][0] === res[i+1][0]) && (res[i][1] === res[i+1][1])) return fail('Duplicate edge detected'); 
+
+  }
+
+}
+
+return res;
+
 };
-
-
-// if source and target are C, then filter to max 3
-// if source is A and target is C then filter to = 4
 
 module.exports.paths = function({ graph = [], from, to }, path = []) {
     const linkedNodes = memoize(nodes.bind(null, graph));
@@ -116,7 +144,11 @@ return _routes;
 
 module.exports.loadGraph = function(f){
 
-  var _array = fs.readFileSync(f).toString().split(',');
+  try{
+    var _array = fs.readFileSync(f).toString().split(',');
+  } catch (err){
+      return fail('There was an error loading the file');
+    }
   return _array.map(Function.prototype.call, String.prototype.trim);
 
 };
@@ -200,4 +232,9 @@ function createMatrix(m, n, init) {
         result.push(new Array(m).fill(init));
     }
     return result;
+}
+
+
+function fail(thing) {
+  throw new Error(thing);
 }

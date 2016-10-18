@@ -7,12 +7,26 @@ var graph = [ [ 0, 1, 5 ],[ 1, 2, 4 ],[ 2, 3, 8 ],[ 3, 2, 8 ],[ 3, 4, 6 ],[ 0, 3
 
 describe('routes', () => {
   describe('.convertGraph', () => {
-    it('generates points', () => {
+    it('Converts directed graph into something usable', () => {
       var vertexSet = 'ABCDE'.split('');
       var inputArray = ['AB6', 'CD15', 'DE1'];
-      var expected = [[0, 1, 6], [2, 3, 15], [3, 4, 1]];
+      var expected = [[3, 4, 1], [2, 3, 15], [0, 1, 6]];
       var result = routes.convertGraph(vertexSet, inputArray);
       expect(result).toEqual(expected);
+    });
+  });
+
+  describe('.convertGraph', () => {
+    it('Finds an issue with a duplicate', () => {
+      var dups = ['AB6', 'AB6', 'DE1'];
+      expect(routes.convertGraph(vertexSet, dups)).toThrow(/\bDuplicate/);
+    });
+  });
+
+  describe('.convertGraph', () => {
+    it('Finds an issue with an edge that has same source and target node', () => {
+      var dups = ['CC6', 'CC1', 'DE1'];
+      expect(routes.convertGraph(vertexSet, dups)).toThrow(/\bBad/);
     });
   });
 

@@ -2,11 +2,12 @@
 'use strict';
 
 
-var program = require('commander');
+var program = require('commander');  // convenience module for command line usage...  no other packages used other than test ones.
 var routes = require('./routes.js');
 var twtest = require('./twtests.js');
 
 const GRAPHFILE = './input/graph.txt';
+
  
 program
   .version('0.0.1')
