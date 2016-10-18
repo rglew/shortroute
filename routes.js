@@ -14,6 +14,10 @@ module.exports.convertGraph = function(vertexSet, inputArray) {
     });
 };
 
+
+// if source and target are C, then filter to max 3
+// if source is A and target is C then filter to = 4
+
 module.exports.paths = function({ graph = [], from, to }, path = []) {
     const linkedNodes = memoize(nodes.bind(null, graph));
     return explore(from, to);
@@ -110,30 +114,12 @@ for (i=0 ; i<_routes.length;i++ ){
 return _routes;
 }
 
-module.exports.loadGraph = function(){
+module.exports.loadGraph = function(f){
 
-  var _array = fs.readFileSync('./input/graph.txt').toString().split(',');
+  var _array = fs.readFileSync(f).toString().split(',');
   return _array.map(Function.prototype.call, String.prototype.trim);
 
 };
-
-
-module.exports.getVertexSet = function(_graph){
-
-    var tempArray = [];
-  for (var i=0; i < _graph.length; i++){
-    tempArray.push (_graph[i].split('',2)); //this won't work once we get past Z eg AA -> AB
-  }   
-    var vertexSet = uniq([].concat.apply([], tempArray));
-
-  return vertexSet;
-}
-
-function uniq(a) {
-    return a.sort().filter(function(item, pos, ary) {
-        return !pos || item != ary[pos - 1];
-    })
-}
 
 
 module.exports.calcShortRoute= function(vertexSet, _weightedEdges, origin, destination) {
@@ -201,7 +187,7 @@ for (i=0; (i < _input.length -1); i++) {
   }
 
 if (match === false) {
-  return -1;
+  return 'No such route.';
   }
 
 }
