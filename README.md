@@ -20,27 +20,27 @@ At this point, the app should be ready to go on your system as a console app usi
 ##Usage:
 
 The graph that is loaded is in ./input/graph.txt.  This can be swapped with another valid graph if desired.
-The app runs using the alias `rr` by default
+The app runs using the alias `sr` by default
 The list of cities (nodes) is currently limited to A B C D E
 
-`rr route A B C`
+`sr route A B C`
 
 This will give you the distance of a route constructed from the digraph given in the file
 
-`rr shortroute A D`
+`sr shortroute A D`
 
 This will give you the shortest distance between two points (modified Floyd Warshall algorithm)
 
-`rr nroutes B B`
+`sr nroutes B B`
 
 This will give you the different routes between two points
 
-`rr thoughtworks`
+`sr thoughtworks`
 
 This will create the output as directed by the assignment
 
-`rr version`
-`rr help`
+`sr version`
+`sr help`
 
 These come out of the box with the commander package...
 

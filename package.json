@@ -4,7 +4,7 @@
   "description": "Trains implementation for TW coding assignment",
   "main": "index.js",
   "scripts": {
-     "test": "./node_modules/.bin/mocha" 
+    "test": "./node_modules/.bin/jest ./test/tests.js"
   },
   "bin": {
     "sr": "index.js"
@@ -23,9 +23,8 @@
   },
   "homepage": "https://github.com/rglew/shortroute#readme",
   "dependencies": {
-    "babel-register": "^6.16.3",
-    "commander": "^2.9.0",
-    "expect": "^1.20.2",
-    "mocha": "^3.1.2"
+    "babel-register": "*",
+    "commander": "*",
+    "jest": "^22.1.1"
   }
 }

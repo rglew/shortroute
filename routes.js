@@ -1,15 +1,9 @@
-var fs = require('fs');
-
+var fs = require("fs");
 
 module.exports.convertGraph = function(vertexSet, inputArray) {
-  
-
-
-
-try{
-  var res = inputArray
-    .map(function(val) {
-      var parts = val.split('');
+  try {
+    var res = inputArray.map(function(val) {
+      var parts = val.split("");
       var num = val.slice(2, val.length);
       return [
         vertexSet.indexOf(parts[0]),
@@ -17,223 +11,221 @@ try{
         parseInt(num, 10)
       ];
     });
-} catch (err) {
-  return fail("Error parsing graph");
-}
-
-// need to check for duplicates
-// need to check start node and end node are not the same
-
-var i=0;
-var j=0;
-
-res.sort(function(a,b) {
-if (a[1] == b[1])
-return a[0] < b[0] ? -1 : 1;
-return a[1] < b[1] ? 1 : -1;
-});
-
-for (i=0 ; i< res.length -1 ;i++){
-  for (j=0; j < 2; j++){  // only need to check the first two elements
-   if (res[i][0] === res[i][1]) return fail('Bad edge detected');
-   if ((res[i][0] === res[i+1][0]) && (res[i][1] === res[i+1][1])) return fail('Duplicate edge detected'); 
-
+  } catch (err) {
+    return fail("Error parsing graph");
   }
 
-}
+  // need to check for duplicates
+  // need to check start node and end node are not the same
 
-return res;
+  var i = 0;
+  var j = 0;
 
+  res.sort(function(a, b) {
+    if (a[1] == b[1]) return a[0] < b[0] ? -1 : 1;
+    return a[1] < b[1] ? 1 : -1;
+  });
+
+  for (i = 0; i < res.length - 1; i++) {
+    for (j = 0; j < 2; j++) {
+      // only need to check the first two elements
+      if (res[i][0] === res[i][1]) return fail("Bad edge detected");
+      if (res[i][0] === res[i + 1][0] && res[i][1] === res[i + 1][1])
+        return fail("Duplicate edge detected");
+    }
+  }
+
+  return res;
 };
 
 module.exports.paths = function({ graph = [], from, to }, path = []) {
-    const linkedNodes = memoize(nodes.bind(null, graph));
-    return explore(from, to);
+  const linkedNodes = memoize(nodes.bind(null, graph));
+  return explore(from, to);
 
-    function explore(currNode, to, paths = []) {
-        path.push(currNode);
-        for (let linkedNode of linkedNodes(currNode)) {
-            if (linkedNode === to) {
-                let result = path.slice(); // copy values
-                result.push(to);
-                paths.push(result);
-                continue;
-            }
-            // do not re-explore edges
-            if (!hasEdgeBeenFollowedInPath({
-                    edge: {
-                        from: currNode,
-                        to: linkedNode
-                    },
-                    path
-                })) {                    
-                explore(linkedNode, to, paths);
-            }
-        }
-        path.pop(); // sub-graph fully explored            
-        return paths;
+  function explore(currNode, to, paths = []) {
+    path.push(currNode);
+    for (let linkedNode of linkedNodes(currNode)) {
+      if (linkedNode === to) {
+        let result = path.slice(); // copy values
+        result.push(to);
+        paths.push(result);
+        continue;
+      }
+      // do not re-explore edges
+      if (
+        !hasEdgeBeenFollowedInPath({
+          edge: {
+            from: currNode,
+            to: linkedNode
+          },
+          path
+        })
+      ) {
+        explore(linkedNode, to, paths);
+      }
     }
-}
+    path.pop(); // sub-graph fully explored
+    return paths;
+  }
+};
 
-/** 
- * Get all nodes linked 
+/**
+ * Get all nodes linked
  * to from `node`.
  */
 function nodes(graph, node) {
-    return graph.reduce((p, c) => {
-        (c[0] === node) && p.push(c[1]);
-        return p;
-    }, []);
+  return graph.reduce((p, c) => {
+    c[0] === node && p.push(c[1]);
+    return p;
+  }, []);
 }
 
 /**
- * Has an edge been followed 
+ * Has an edge been followed
  * in the given path?
  */
 function hasEdgeBeenFollowedInPath({ edge, path }) {
-    var indices = allIndices(path, edge.from);
-    return indices.some(i => path[i + 1] === edge.to);
+  var indices = allIndices(path, edge.from);
+  return indices.some(i => path[i + 1] === edge.to);
 }
 
 /**
- * Utility to get all indices of 
+ * Utility to get all indices of
  * values matching `val` in `arr`.
  */
 function allIndices(arr, val) {
-    var indices = [],
-        i;
-    for (i = 0; i < arr.length; i++) {
-        if (arr[i] === val) {
-            indices.push(i);
-        }
+  var indices = [],
+    i;
+  for (i = 0; i < arr.length; i++) {
+    if (arr[i] === val) {
+      indices.push(i);
     }
-    return indices;
+  }
+  return indices;
 }
 
 /**
- * Avoids recalculating linked 
+ * Avoids recalculating linked
  * nodes.
  */
 function memoize(fn) {
-    const cache = new Map();
-    return function() {
-        var key = JSON.stringify(arguments);
-        var cached = cache.get(key);
-        if (cached) {
-            return cached;
-        }
-        cached = fn.apply(this, arguments)
-        cache.set(key, cached);
-        return cached;;
-    };
-}
-
-module.exports.recodeRoutes = function(_cityList, _routes ){
-
-var i = 0;
-var j = 0;
-
-for (i=0 ; i<_routes.length;i++ ){
-  for (j=0;j<_routes[i].length;j++){
-    _routes[i][j] = _cityList[_routes[i][j]];
-  }
-}
-
-return _routes;
-}
-
-module.exports.loadGraph = function(f){
-
-  try{
-    var _array = fs.readFileSync(f).toString().split(',');
-  } catch (err){
-      return fail('There was an error loading the file');
+  const cache = new Map();
+  return function() {
+    var key = JSON.stringify(arguments);
+    var cached = cache.get(key);
+    if (cached) {
+      return cached;
     }
+    cached = fn.apply(this, arguments);
+    cache.set(key, cached);
+    return cached;
+  };
+}
+
+module.exports.recodeRoutes = function(_cityList, _routes) {
+  var i = 0;
+  var j = 0;
+
+  for (i = 0; i < _routes.length; i++) {
+    for (j = 0; j < _routes[i].length; j++) {
+      _routes[i][j] = _cityList[_routes[i][j]];
+    }
+  }
+
+  return _routes;
+};
+
+module.exports.loadGraph = function(f) {
+  try {
+    var _array = fs
+      .readFileSync(f)
+      .toString()
+      .split(",");
+  } catch (err) {
+    return fail("There was an error loading the file");
+  }
   return _array.map(Function.prototype.call, String.prototype.trim);
-
 };
 
+module.exports.calcShortRoute = function(
+  vertexSet,
+  _weightedEdges,
+  origin,
+  destination
+) {
+  var vertexSetLength = vertexSet.length;
 
-module.exports.calcShortRoute= function(vertexSet, _weightedEdges, origin, destination) {
+  // Implementation of Floyd-Warshall algorithm
+  // https://en.wikipedia.org/wiki/Floyd-Warshall_algorithm
+  const INFINITY = 1 / 0;
+  var matrix = createMatrix(vertexSetLength, vertexSetLength, INFINITY);
 
+  // According to this algo, the shortest distance between two paths is 0, but the test data excludes this..
+  //for (var i = 0 ; i < vertexSetLength ; i++) {
+  //
+  //  for (var j = 0 ; j < vertexSetLength ; j++){
+  //    if (i === j) matrix[i][j] = 0;
+  //     }
+  //}
 
-var vertexSetLength = vertexSet.length;
+  for (var i = 0; i < _weightedEdges.length; i++) {
+    matrix[_weightedEdges[i][0]][[_weightedEdges[i][1]]] = _weightedEdges[i][2];
+  }
 
-// Implementation of Floyd-Warshall algorithm
-// https://en.wikipedia.org/wiki/Floyd-Warshall_algorithm
-const INFINITY = 1/0;
-var matrix = createMatrix(vertexSetLength,vertexSetLength,INFINITY);
-
-
-// According to this algo, the shortest distance between two paths is 0, but the test data excludes this..
-//for (var i = 0 ; i < vertexSetLength ; i++) {
-//
-//  for (var j = 0 ; j < vertexSetLength ; j++){
-//    if (i === j) matrix[i][j] = 0;
-//     }
-//}
-
-for (var i = 0 ; i < _weightedEdges.length ; i++) {
-  matrix[_weightedEdges[i][0]][[_weightedEdges[i][1]]] = _weightedEdges[i][2];
-}
-
-
-for (var k=0;k<vertexSetLength;k++){
-  for (var i=0 ; i< vertexSetLength;i++){
-    for (var j =0; j< vertexSetLength;j++){
-      if (matrix[i][j] > matrix[i][k] + matrix[k][j]) matrix[i][j] = matrix[i][k] + matrix[k][j];
+  for (var k = 0; k < vertexSetLength; k++) {
+    for (var i = 0; i < vertexSetLength; i++) {
+      for (var j = 0; j < vertexSetLength; j++) {
+        if (matrix[i][j] > matrix[i][k] + matrix[k][j])
+          matrix[i][j] = matrix[i][k] + matrix[k][j];
+      }
     }
   }
-}
 
-var shortest_distance = matrix[origin][destination];
-return(shortest_distance);
+  var shortest_distance = matrix[origin][destination];
+  return shortest_distance;
 };
 
+module.exports.calcRoute = function(cityList, _gph, args) {
+  //var fooInput = [0,1,4];
+  //var fooGraph = [[0,1,5],[1,4,3],[0,2,6]];  // answer should be 8
+  var i = 0;
+  var k = 0;
+  var acc = 0;
+  var match = false;
+  var _input = [].concat.apply(
+    [],
+    args.map(function(val) {
+      var elements = val.split("");
+      return elements.map(function(elem) {
+        return cityList.indexOf(elem);
+      });
+    })
+  );
 
-module.exports.calcRoute = function(cityList, _gph, args){
-  
-//var fooInput = [0,1,4];
-//var fooGraph = [[0,1,5],[1,4,3],[0,2,6]];  // answer should be 8
-var i = 0;
-var k = 0;
-var acc = 0;
-var match = false;
-var _input = [].concat.apply([],args.map(function(val) {
-  var elements = (val.split(''));
-  return elements.map(function(elem) {
-      return cityList.indexOf(elem);
-});
-  }));
-
-
-for (i=0; (i < _input.length -1); i++) {
-  match = false;
-  for (k=0; k <_gph.length; k++) {
-    if ((_input[i] === _gph[k][0]) && (_input[i + 1] === _gph[k][1])) {
-      acc = (acc + _gph[k][2]);
-      match = true;
+  for (i = 0; i < _input.length - 1; i++) {
+    match = false;
+    for (k = 0; k < _gph.length; k++) {
+      if (_input[i] === _gph[k][0] && _input[i + 1] === _gph[k][1]) {
+        acc = acc + _gph[k][2];
+        match = true;
+      }
+      if (_input[i] === _input[i + 1]) match = true; //edge case A B B C
     }
-    if (_input[i] === _input[i+1]) match = true; //edge case A B B C
-      
-  }
 
-if (match === false) {
-  return 'No such route.';
+    if (match === false) {
+      return "No such route.";
+    }
   }
-
-}
-return acc;
+  return acc;
 };
 
 function createMatrix(m, n, init) {
-    var result = [];
-    for(var i = 0; i < n; i++) {
-        result.push(new Array(m).fill(init));
-    }
-    return result;
+  var result = [];
+  for (var i = 0; i < n; i++) {
+    result.push(new Array(m).fill(init));
+  }
+  return result;
 }
-
 
 function fail(thing) {
   throw new Error(thing);
