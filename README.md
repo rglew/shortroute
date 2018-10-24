@@ -4,9 +4,9 @@ This is an implementation of the Trains problem from the various options.
 
 ##Installation instructions.
 
-This has been tested on OS X 10.12, I cannot verify if it works on Windows or any other platform.
+This has been tested on OS X 10.13...
 
-It is written in Javascript using NodeJS v6.8.1 and NPM 3.10.9  
+It is written in Javascript using NodeJS v6.9.5 and NPM 6.4.1  
 
 ##Setup:
 
@@ -23,24 +23,24 @@ The graph that is loaded is in ./input/graph.txt.  This can be swapped with anot
 The app runs using the alias `sr` by default
 The list of cities (nodes) is currently limited to A B C D E
 
-`sr route A B C`
+`sr --route A B C`
 
 This will give you the distance of a route constructed from the digraph given in the file
 
-`sr shortroute A D`
+`sr --shortroute A D`
 
 This will give you the shortest distance between two points (modified Floyd Warshall algorithm)
 
-`sr nroutes B B`
+`sr --nroutes B B`
 
 This will give you the different routes between two points
 
-`sr thoughtworks`
+`sr --thoughtworks`
 
 This will create the output as directed by the assignment
 
-`sr version`
-`sr help`
+`sr --version`
+`sr --help`
 
 These come out of the box with the commander package...
 
@@ -51,5 +51,3 @@ These come out of the box with the commander package...
 * It should work out of the box - I have tested on a couple of different machines with success
 * There is some input validation, there needs to be more
 * There are some tests - ideally I would add more time permitting including some other kinds (eg: BDD style tests)
-* * As you may have been told, it's been a long while since I coded as a dayjob and most of my coding is just snippets and trying to learn FP.  I haven't really done much Javascript work...  There are a lot of things I would love to improve with time to get up to speed on the tools...
-* I ran out of time to complete Question 10. :/
