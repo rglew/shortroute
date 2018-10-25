@@ -46,7 +46,7 @@ These come out of the box with the commander package...
 
 ##Notes:
 
-* Basic unit tests have been implemented with Mocha and Expect, run them with NPM test
+* Basic unit tests have been implemented with Jest, run them with NPM test
 * I have used one package, commander to simplify the usage of the app if you want to run it interactively.  Other than that I have stcuk with the core language features as far as possible.
 * It should work out of the box - I have tested on a couple of different machines with success
 * There is some input validation, there needs to be more

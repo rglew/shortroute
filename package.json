@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/rglew/shortroute#readme",
   "dependencies": {
-    "babel-register": "*",
-    "commander": "*",
+    "babel-register": "^6.26.0",
+    "commander": "^2.19.0",
     "jest": "^23.6.0"
   }
 }
