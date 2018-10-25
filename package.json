@@ -4,7 +4,7 @@
   "description": "Trains implementation for TW coding assignment",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/jest ./test/tests.js"
+    "test": "./node_modules/.bin/jest ./test/test.js"
   },
   "bin": {
     "sr": "index.js"
