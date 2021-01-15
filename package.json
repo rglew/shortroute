@@ -24,7 +24,7 @@
   "homepage": "https://github.com/rglew/shortroute#readme",
   "dependencies": {
     "babel-register": "^6.26.0",
-    "commander": "^2.20.0",
+    "commander": "^7.0.0",
     "jest": "^24.8.0"
   }
 }
