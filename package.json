@@ -25,6 +25,6 @@
   "dependencies": {
     "babel-register": "^6.26.0",
     "commander": "^2.20.0",
-    "jest": "^24.8.0"
+    "jest": "^27.0.4"
   }
 }
